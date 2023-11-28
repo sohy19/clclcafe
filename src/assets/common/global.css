@@ -1,0 +1,37 @@
+#main-text {
+	color: #14191f;
+	font-size: 1.5rem;
+	font-weight: bold;
+	white-space: pre-line;
+}
+
+.border {
+	background-color: white;
+	border: none;
+	border-radius: 1rem;
+}
+
+.input {
+	font-size: 0.9rem;
+	padding: 0.7rem 1rem;
+	width: 18rem;
+	margin-top: 2rem;
+}
+
+.main-but {
+	background-color: #afbdca;
+	color: #14191f;
+	padding: 0.8rem;
+	width: 20rem;
+	border-radius: 0.5rem;
+	margin: 0 auto;
+}
+
+#buts {
+	margin-top: 3rem;
+}
+
+.main-but:hover {
+	cursor: pointer;
+	opacity: 90%;
+}

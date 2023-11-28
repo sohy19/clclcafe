@@ -6,4 +6,18 @@
 	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+	padding: 1.5rem 0;
+	text-align: right;
+	padding-right: 3rem;
+}
+
+a {
+	background-color: #afbdca;
+	color: #14191f;
+	padding: 0.3rem 1.5rem;
+	border-radius: 1rem;
+	text-decoration: none;
+}
+</style>
