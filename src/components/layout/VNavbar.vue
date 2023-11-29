@@ -7,6 +7,8 @@
 </template>
 
 <style scoped>
+@import "@/assets/common/global.css";
+
 div {
 	padding: 1.5rem 0;
 	text-align: right;
@@ -15,10 +17,8 @@ div {
 
 a {
 	background-color: #afbdca;
-	color: #14191f;
 	padding: 0.3rem 1.5rem;
 	border-radius: 1rem;
-	text-decoration: none;
 	font-size: 0.9rem;
 }
 

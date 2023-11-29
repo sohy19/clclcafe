@@ -73,13 +73,15 @@ const data = [
 
 <template>
 	<div class="search-div">
-		<input type="text" />
+		<input type="text" placeholder="Search in site" />
 		<search-icon class="search-icon" />
 	</div>
 	<div class="wrap">
 		<chat-item v-for="chat in data" :key="chat.id" :chat="chat" />
 	</div>
-	<div class="main-but regist-but">새로운 채팅 시작</div>
+	<router-link :to="{ name: 'chat-creation' }">
+		<div class="main-but regist-but">새로운 채팅 시작</div>
+	</router-link>
 </template>
 
 <style scoped>

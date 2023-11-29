@@ -13,11 +13,6 @@
 <style scoped>
 @import "@/assets/common/global.css";
 
-a {
-	text-decoration: none;
-	color: black;
-}
-
 .login-but {
 	margin-bottom: 1.5rem;
 }
