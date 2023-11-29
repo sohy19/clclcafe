@@ -1,13 +1,14 @@
 <script setup>
 import VNavbar from "@/components/layout/VNavbar.vue";
-import CloudIcon from "./assets/icon/CloudIcon.vue";
-import CloudIconVue from "./assets/icon/CloudIcon.vue";
+import CloudIcon from "./assets/icons/CloudIcon.vue";
 </script>
 
 <template>
 	<div id="wrap">
 		<v-navbar />
-		<cloud-icon />
+		<router-link :to="{ name: 'chat' }">
+			<cloud-icon />
+		</router-link>
 		<router-view />
 	</div>
 </template>
@@ -15,6 +16,7 @@ import CloudIconVue from "./assets/icon/CloudIcon.vue";
 <style>
 * {
 	background-color: #f6efe7;
+	font-family: "SOYOMapleRegularTTF";
 }
 </style>
 

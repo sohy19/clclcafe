@@ -1,7 +1,7 @@
 #main-text {
 	color: #14191f;
 	font-size: 1.5rem;
-	font-weight: bold;
+	font-family: "SOYOMapleBoldTTF";
 	white-space: pre-line;
 }
 
@@ -21,10 +21,11 @@
 .main-but {
 	background-color: #afbdca;
 	color: #14191f;
-	padding: 0.8rem;
+	padding: 0.8rem 0;
 	width: 20rem;
 	border-radius: 0.5rem;
 	margin: 0 auto;
+	text-align: center;
 }
 
 #buts {

@@ -19,5 +19,10 @@ a {
 	padding: 0.3rem 1.5rem;
 	border-radius: 1rem;
 	text-decoration: none;
+	font-size: 0.9rem;
+}
+
+a:hover {
+	opacity: 90%;
 }
 </style>
