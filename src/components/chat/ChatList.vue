@@ -1,5 +1,5 @@
 <script setup>
-import ChatItem from "./item/ChatItem.vue";
+import ChatListItem from "./item/ChatListItem.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
 
 const data = [
@@ -77,7 +77,7 @@ const data = [
 		<search-icon class="search-icon" />
 	</div>
 	<div class="wrap">
-		<chat-item v-for="chat in data" :key="chat.id" :chat="chat" />
+		<chat-list-item v-for="chat in data" :key="chat.id" :chat="chat" />
 	</div>
 	<router-link :to="{ name: 'chat-creation' }">
 		<div class="main-but regist-but">새로운 채팅 시작</div>
