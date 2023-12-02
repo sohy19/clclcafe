@@ -12,7 +12,7 @@ const truncateText = (text, maxLength) => {
 <template>
 	<div id="wrap">
 		<div id="title">
-			{{ truncateText(chat.name, 16) }}
+			{{ truncateText(chat.name, 15) }}
 		</div>
 		<div id="description">
 			{{ truncateText(chat.description, 46) }}
@@ -40,6 +40,7 @@ div {
 #wrap {
 	border-radius: 1rem;
 	width: 15.5rem;
+	height: 8rem;
 	margin: 0.5rem;
 	padding: 1.5rem;
 	display: flex;

@@ -1,74 +1,25 @@
 <script setup>
 import ChatListItem from "./item/ChatListItem.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
+import { getList } from "@/api/chat";
+import { onMounted, ref } from "vue";
 
-const data = [
-	{
-		id: 1,
-		name: "자유롭게",
-		description: "자유롭게 떠들어보자",
-		madeBy: "방가방가",
-		maxCapacity: 1,
-		headcount: 1,
-	},
-	{
-		id: 2,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description:
-			"초보자, 중급자 자유롭게초보자, 중급자 자유롭게초보자, 중급자 자유롭게초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-	{
-		id: 3,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 3,
-	},
-	{
-		id: 4,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-	{
-		id: 5,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-	{
-		id: 6,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-	{
-		id: 7,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-	{
-		id: 8,
-		name: "쿠버네티스에 대해서 이야기 나눠요",
-		description: "초보자, 중급자 자유롭게",
-		madeBy: "방가방가",
-		maxCapacity: 3,
-		headcount: 1,
-	},
-];
+const chats = ref();
+
+function list() {
+	getList(
+		({ data }) => {
+			chats.value = data;
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
+}
+
+onMounted(() => {
+	list();
+});
 </script>
 
 <template>
@@ -77,7 +28,7 @@ const data = [
 		<search-icon class="search-icon" />
 	</div>
 	<div class="wrap">
-		<chat-list-item v-for="chat in data" :key="chat.id" :chat="chat" />
+		<chat-list-item v-for="chat in chats" :key="chat.id" :chat="chat" />
 	</div>
 	<router-link :to="{ name: 'chat-creation' }">
 		<div class="main-but regist-but">새로운 채팅 시작</div>
@@ -116,7 +67,7 @@ input:focus {
 .wrap {
 	display: flex;
 	flex-wrap: wrap;
-	height: 30rem;
+	max-height: 30rem;
 	overflow: scroll;
 	margin-top: 2rem;
 }
