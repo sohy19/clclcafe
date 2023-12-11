@@ -19,12 +19,12 @@ const user = ref({
 const login = async () => {
 	await userLogin(user.value);
 
-	// if (isLogin) {
-	// 	alert("로그인되었습니다.");
-	// 	router.replace("/");
-	// } else {
-	// 	isError.value = true;
-	// }
+	if (isLogin) {
+		alert("로그인되었습니다.");
+		router.replace("/");
+	} else {
+		isError.value = true;
+	}
 };
 </script>
 

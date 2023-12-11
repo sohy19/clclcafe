@@ -7,14 +7,17 @@ const router = useRouter();
 
 const notEqual = ref(false);
 const notAvailableEmail = ref(false);
+const emailErrorMsg = ref("");
 const notAvailablePassword = ref(false);
+const passwordErrorMsg = ref("");
 const notAvailableNickname = ref(false);
-const confirmPassword = ref("1004a**");
+const nicknameErrorMsg = ref("");
+const confirmPassword = ref("");
 
 const user = ref({
-	email: "eomso19@naver.com",
-	password: "1004a**",
-	nickname: "소현",
+	email: "",
+	password: "",
+	nickname: "",
 });
 
 const userSignup = () => {
@@ -38,6 +41,21 @@ const userSignup = () => {
 			},
 			(error) => {
 				console.log(error);
+				const errorMsg = error.response.data;
+				if (errorMsg.email) {
+					notAvailableEmail.value = true;
+					emailErrorMsg.value = errorMsg.email[0];
+				}
+
+				if (errorMsg.password) {
+					notAvailablePassword.value = true;
+					passwordErrorMsg.value = errorMsg.password[0];
+				}
+
+				if (errorMsg.nickname) {
+					notAvailableNickname.value = true;
+					nicknameErrorMsg.value = errorMsg.nickname[0];
+				}
 			}
 		);
 	}
@@ -54,7 +72,7 @@ const userSignup = () => {
 		v-model="user.email"
 	/><br />
 	<div v-show="notAvailableEmail" class="error-text">
-		아이디는 6자 이상 13자 이하로 작성하고, 특수 문자는 _와 -만 사용 가능해요.
+		{{ emailErrorMsg }}
 	</div>
 	<input
 		class="border input"
@@ -71,7 +89,7 @@ const userSignup = () => {
 		v-model="confirmPassword"
 	/><br />
 	<div v-show="notAvailablePassword" class="error-text">
-		영문, 숫자, 특수문자 조합해 6자 이상, 13자 이하 입력해주세요.
+		{{ passwordErrorMsg }}
 	</div>
 	<div v-show="notEqual" class="error-text">비밀번호가 일치하지 않아요.</div>
 	<input
@@ -82,7 +100,7 @@ const userSignup = () => {
 		v-model="user.nickname"
 	/><br />
 	<div v-show="notAvailableNickname" class="error-text">
-		닉네임이 이미 존재해요! 다른 걸로 부탁해요.
+		{{ nicknameErrorMsg }}
 	</div>
 	<div id="buts">
 		<div class="main-but" @click="userSignup">회원가입</div>
@@ -96,6 +114,8 @@ const userSignup = () => {
 	color: red;
 	font-size: 0.8rem;
 	margin-top: 0.2rem;
+	text-align: left;
+	width: 20rem;
 }
 
 .error-line {
