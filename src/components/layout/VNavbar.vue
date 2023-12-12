@@ -1,8 +1,19 @@
-<script setup></script>
+<script setup>
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { isLogin, userInfo } = storeToRefs(memberStore);
+</script>
 
 <template>
 	<div>
-		<router-link :to="{ name: 'user-login' }">로그인</router-link>
+		<!-- <div > -->
+		<div v-if="isLogin">
+			어서와요, {{ userInfo.nickname }}씨 <span>로그아웃</span>
+		</div>
+		<!-- </div> -->
+		<router-link v-else :to="{ name: 'user-login' }">로그인</router-link>
 	</div>
 </template>
 
@@ -15,14 +26,17 @@ div {
 	padding-right: 3rem;
 }
 
-a {
+a,
+span {
 	background-color: #afbdca;
-	padding: 0.3rem 1.5rem;
+	padding: 0.3rem 1rem;
 	border-radius: 1rem;
 	font-size: 0.9rem;
 }
 
-a:hover {
+a,
+span:hover {
+	cursor: pointer;
 	opacity: 90%;
 }
 </style>

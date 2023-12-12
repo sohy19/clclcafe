@@ -109,16 +109,4 @@ const userSignup = () => {
 
 <style scoped>
 @import "@/assets/common/global.css";
-
-.error-text {
-	color: red;
-	font-size: 0.8rem;
-	margin-top: 0.2rem;
-	text-align: left;
-	width: 20rem;
-}
-
-.error-line {
-	border: 1px solid red;
-}
 </style>

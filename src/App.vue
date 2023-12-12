@@ -27,10 +27,4 @@ import CloudIcon from "./assets/icons/CloudIcon.vue";
 	min-height: 90vh;
 	padding-bottom: 10rem;
 }
-
-.cloud-icon {
-}
-
-.all-margin {
-}
 </style>

@@ -15,28 +15,38 @@ export const useMemberStore = defineStore(
 		});
 		const isValidToken = ref(false);
 
-		const userLogin = async (user) => {
+		const userLogin = async (user, callbackFunc) => {
 			await login(
 				user,
 				(response) => {
 					if (response.status === httpStatusCode.OK) {
 						let { data } = response;
 						console.log(data);
+						// console.log(data.member.nickname);
 						sessionStorage.setItem("accessToken", data.accessToken);
-						// sessionStorage.setItem("refreshToken", data.refreshToken);
+						sessionStorage.setItem("refreshToken", data.refreshToken);
 						userInfo.value.nickname = data.member.nickname;
 						userInfo.value.email = data.member.email;
 						isLogin.value = true;
 						isValidToken.value = true;
+						// console.log(userInfo.value.nickname);
+						// alert("로그인되었습니다.");
+						// router.replace("/");
 					} else {
 						isLogin.value = false;
 						isValidToken.value = false;
+						// isError.value = true;
 					}
+					callbackFunc();
 				},
 				(error) => {
 					console.error(error);
+					// isError.value = true;
+					callbackFunc();
 				}
 			);
+
+			// callbackFunc();
 		};
 
 		// const tokenRegenerate = async (callbackFunc) => {
@@ -86,22 +96,23 @@ export const useMemberStore = defineStore(
 		// 	callbackFunc();
 		// };
 
-		// const userLogout = async () => {
-		// 	await logout(
-		// 		(response) => {
-		// 			if (response.status === httpStatusCode.OK) {
-		// 				isLogin.value = false;
-		// 				userInfo.value = null;
-		// 				isValidToken.value = false;
-		// 			} else {
-		// 				console.error("유저 정보 없음!!!!");
-		// 			}
-		// 		},
-		// 		(error) => {
-		// 			console.log(error);
-		// 		}
-		// 	);
-		// };
+		const userLogout = async (param) => {
+			await logout(
+				param,
+				(response) => {
+					// if (response.status === httpStatusCode.OK) {
+					isLogin.value = false;
+					userInfo.value = null;
+					isValidToken.value = false;
+					// } else {
+					// 	console.error("유저 정보 없음!!!!");
+					// }
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+		};
 
 		return {
 			isLogin,
@@ -109,7 +120,7 @@ export const useMemberStore = defineStore(
 			userInfo,
 			isValidToken,
 			userLogin,
-			// userLogout,
+			userLogout,
 		};
 	},
 	{ persist: { storage: sessionStorage } }

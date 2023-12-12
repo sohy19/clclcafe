@@ -15,3 +15,7 @@ export async function signup(param, success, fail) {
 export function login(param, success, fail) {
 	local.post(`${url}/signin/`, JSON.stringify(param)).then(success).catch(fail);
 }
+
+export function logout(param, success, fail) {
+	local.post(`${url}/logout/`, JSON.stringify(param)).then(success).catch(fail);
+}
