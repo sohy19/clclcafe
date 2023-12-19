@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
-import { login } from "@/api/user";
+import { login, logout } from "@/api/user";
 import { httpStatusCode } from "@/util/http-status";
 
 export const useMemberStore = defineStore(
@@ -96,14 +96,14 @@ export const useMemberStore = defineStore(
 		// 	callbackFunc();
 		// };
 
-		const userLogout = async (param) => {
+		const userLogout = async () => {
+			console.log("userlogout");
 			await logout(
-				param,
+				{
+					refreshToken: sessionStorage.getItem("refreshToken"),
+				},
 				(response) => {
 					// if (response.status === httpStatusCode.OK) {
-					isLogin.value = false;
-					userInfo.value = null;
-					isValidToken.value = false;
 					// } else {
 					// 	console.error("유저 정보 없음!!!!");
 					// }
@@ -112,6 +112,14 @@ export const useMemberStore = defineStore(
 					console.log(error);
 				}
 			);
+			isLogin.value = false;
+			userInfo.value = null;
+			isValidToken.value = false;
+			sessionStorage.clear();
+			alert("로그아웃 되었습니다.");
+			router.replace({
+				name: "main",
+			});
 		};
 
 		return {
