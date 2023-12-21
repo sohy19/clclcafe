@@ -1,12 +1,42 @@
 <script setup>
-defineProps({ chat: Object });
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
+const props = defineProps({ chat: Object });
+const memberStore = useMemberStore();
+const { isLogin } = storeToRefs(memberStore);
+const router = useRouter();
+const isMax = ref(false);
+
+// ************ 참여자 max인지 확인 ************
+function isMaxFunc() {
+	if (props.chat.headcount == props.chat.maxCapacity) {
+		isMax.value = true;
+	}
+}
+
+// ************ 제목, 내용 글자 ... 대체 ************
 const truncateText = (text, maxLength) => {
 	if (text && text.length > maxLength) {
 		return text.slice(0, maxLength) + "...";
 	}
 	return text;
 };
+
+const joinChat = () => {
+	if (isLogin.value) {
+		router.push({ name: "chat-detail", params: { chatId: props.chat.id } });
+	} else {
+		alert("대화를 나누려면 로그인이 필요해요.");
+		router.push({ name: "user-login" });
+	}
+};
+
+onMounted(() => {
+	isMaxFunc();
+});
 </script>
 
 <template>
@@ -19,15 +49,12 @@ const truncateText = (text, maxLength) => {
 		</div>
 		<div id="bottom">
 			<div>
-				<div
-					class="count"
-					:class="chat.headcount === chat.maxCapacity && 'max-count'"
-				>
+				<div class="count" :class="isMax && 'max-count'">
 					인원 : {{ chat.headcount }}/{{ chat.maxCapacity }}
 				</div>
 				<div id="host">방장 : {{ chat.madeBy }}</div>
 			</div>
-			<div id="but">참여하기</div>
+			<div id="but" v-show="!isMax" @click="joinChat">참여하기</div>
 		</div>
 	</div>
 </template>

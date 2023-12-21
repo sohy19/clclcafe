@@ -22,7 +22,7 @@ const router = createRouter({
 					component: () => import("@/components/chat/ChatCreation.vue"),
 				},
 				{
-					path: "/detail",
+					path: "/detail/:chatId",
 					name: "chat-detail",
 					component: () => import("@/components/chat/ChatDetail.vue"),
 				},

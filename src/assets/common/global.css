@@ -45,7 +45,8 @@ a {
 .error-text {
 	color: red;
 	font-size: 0.8rem;
-	margin-top: 0.2rem;
+	padding-top: 0.2rem;
+	margin: 0 auto;
 	text-align: left;
 	width: 20rem;
 }

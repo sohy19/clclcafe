@@ -25,11 +25,8 @@ export async function createChat(param, success, fail) {
 		.catch(fail);
 }
 
-export async function joinChat(id, param, success, fail) {
-	await local
-		.post(`${url}/${id}/join/`, JSON.stringify(param))
-		.then(success)
-		.catch(fail);
+export async function joinChat(id, success, fail) {
+	await local.post(`${url}/${id}/join/`).then(success).catch(fail);
 }
 
 export async function moreChat(id, timestamp, success, fail) {

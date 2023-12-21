@@ -1,27 +1,98 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { getDetail, getUser, joinChat } from "@/api/chat";
+import MyChatItem from "./item/MyChatItem.vue";
+import YourChatItem from "./item/YourChatItem.vue";
 
-const chatInfo = {
-	id: 1,
-	name: "자유롭게",
-	description: "자유롭게 떠들어보자",
-	madeBy: "방가방가",
-	maxCapacity: 3,
+const route = useRoute();
+const { chatId } = route.params;
+
+// ************ 채팅 정보 ************
+const chatInfo = ref({
+	id: 0,
+	name: "",
+	description: "",
+	madeBy: "",
+	maxCapacity: 0,
+});
+
+const getChatInfo = () => {
+	getDetail(
+		chatId,
+		(response) => {
+			let { data } = response;
+			chatInfo.value.id = data.id;
+			chatInfo.value.name = data.name;
+			chatInfo.value.description = data.description;
+			chatInfo.value.madeBy = data.madeBy;
+			chatInfo.value.maxCapacity = data.maxCapacity;
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
 };
 
-const users = ["소현", "희관", "현제"];
-
+// ************ 유저 정보 ************
+const users = ref([]);
 const show = ref(false);
 
 const isShow = () => {
 	show.value = !show.value;
+	if (show.value) {
+		getUsers();
+	}
 };
+
+const getUsers = () => {
+	getUser(
+		chatId,
+		(response) => {
+			let { data } = response;
+			users.value = data.joinedMembers;
+			console.log(data.joinedMembers);
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
+};
+
+// ************ 채팅 ************
+const timestamp = ref(null);
+const messages = ref([]);
+
+const getChat = () => {
+	joinChat(
+		chatId,
+		(response) => {
+			let { data } = response;
+			if (data.lastEvaluatedKey) {
+				timestamp.value = data.lastEvaluatedKey.timestamp;
+			} else {
+				timestamp.value = null;
+			}
+			data.oldmessages.forEach((msg) => {
+				messages.value.push(msg);
+			});
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
+};
+
+onMounted(() => {
+	getChatInfo();
+	getChat();
+});
 </script>
 
 <template>
 	<div class="info">
 		<div class="info-div">
-			<div>
+			<div class="chatTitle">
 				<div class="title">방제목</div>
 				<span>{{ chatInfo.name }}</span>
 			</div>
@@ -39,127 +110,8 @@ const isShow = () => {
 	</div>
 	<div class="border chat">
 		<div class="chats">
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap someone">
-				<div class="chat-item">
-					<div class="name">현제</div>
-					<div class="content get">
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor
-					</div>
-				</div>
-				<div class="time">11/26 00:00</div>
-			</div>
-			<div class="chat-wrap me">
-				<div class="time">11/26 00:00</div>
-				<div class="chat-item">
-					<div class="content send">"Lorem ipsum dolor sit amet,</div>
-				</div>
-			</div>
-			<div class="chat-wrap">
-				<div class="border enter">
-					“방가방가방가방가방가” 님이 들어오셨어요.
-				</div>
-			</div>
+			<your-chat-item />
+			<my-chat-item />
 		</div>
 		<div class="send-div">
 			<textarea class="border" type="text"></textarea>
@@ -180,7 +132,9 @@ const isShow = () => {
 .info-div {
 	/* border: 1px solid blue; */
 	margin-right: 18rem;
-	display: inline-block;
+	width: 30rem;
+	text-align: left;
+	padding: 0 1rem;
 }
 
 .title {
@@ -189,6 +143,7 @@ const isShow = () => {
 	padding: 0.5rem 1rem;
 	border-radius: 2rem;
 	display: inline-block;
+	text-align: center;
 }
 
 span {
@@ -209,7 +164,8 @@ span {
 	position: absolute;
 	z-index: 1;
 	margin-top: 3rem;
-	right: 35vw;
+	top: 57vh;
+	right: 34vw;
 	text-align: left;
 }
 
@@ -227,21 +183,6 @@ span {
 	background-color: #afbdca;
 }
 
-.content {
-	max-width: 18rem;
-	padding: 0.5rem;
-	border-radius: 1rem;
-}
-
-.get {
-	background-color: #e9deca;
-	margin-right: 0.3rem;
-}
-
-.send {
-	background-color: #7996b4;
-	margin-left: 0.3rem;
-}
 .chat {
 	width: 28rem;
 	height: 40rem;
@@ -255,12 +196,6 @@ span {
 	overflow: scroll;
 	padding: 1rem;
 	border-radius: 1rem 1rem 0 0;
-}
-
-.chat-item {
-	display: inline-block;
-	background-color: white;
-	text-align: left;
 }
 
 .send-div {
@@ -293,29 +228,6 @@ span {
 
 .send-but:hover {
 	cursor: pointer;
-}
-.name {
-	font-family: "SOYOMapleBoldTTF";
-	background-color: white;
-}
-
-.time {
-	background-color: white;
-	display: inline-block;
-	font-size: 0.8rem;
-}
-
-.chat-wrap {
-	background-color: white;
-	margin-bottom: 1.5rem;
-}
-
-.someone {
-	text-align: left;
-}
-
-.me {
-	text-align: right;
 }
 
 .enter {
