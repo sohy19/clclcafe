@@ -39,7 +39,7 @@ div {
 
 #wrap {
 	border-radius: 1rem;
-	width: 15.5rem;
+	width: 15rem;
 	height: 8rem;
 	margin: 0.5rem;
 	padding: 1.5rem;

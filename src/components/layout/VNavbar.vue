@@ -8,7 +8,6 @@ const { userLogout } = memberStore;
 
 const logout = async () => {
 	userLogout();
-	console.log(111);
 };
 </script>
 
