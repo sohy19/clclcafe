@@ -4,6 +4,11 @@ import { useRoute } from "vue-router";
 import { getDetail, getUser, joinChat } from "@/api/chat";
 import ChatItem from "./item/ChatItem.vue";
 import { socket } from "@/api/socket";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { userInfo } = storeToRefs(memberStore);
 
 const route = useRoute();
 const { chatId } = route.params;
@@ -35,7 +40,7 @@ const getChatInfo = () => {
 };
 
 // ************ 유저 정보 ************
-const users = ref([]);
+const joinedMembers = ref([]);
 const show = ref(false);
 
 const isShow = () => {
@@ -50,7 +55,7 @@ const getUsers = () => {
 		chatId,
 		(response) => {
 			let { data } = response;
-			users.value = data.joinedMembers;
+			joinedMembers.value = data.joinedMembers;
 			console.log(data.joinedMembers);
 		},
 		(error) => {
@@ -62,7 +67,8 @@ const getUsers = () => {
 // ************ 채팅 ************
 const timestamp = ref(null);
 const messages = ref([]);
-const joinedMembers = ref("");
+const joinMember = ref();
+const handlers = null;
 
 const getChat = () => {
 	joinChat(
@@ -74,12 +80,13 @@ const getChat = () => {
 			} else {
 				timestamp.value = null;
 			}
-			joinedMembers.value = data.joinedMembers[0];
+			// joinMember.value = data.joinedMembers[0];
+			joinedMembers.value = data.joinedMembers;
 			data.oldmessages.reverse().forEach((msg) => {
 				messages.value.push(msg);
 			});
 			// 소켓 연결
-			socket(chatId, messages.value);
+			handlers = socket(chatId, messages.value, joinedMembers.value);
 			console.log(data);
 		},
 		(error) => {
@@ -87,6 +94,17 @@ const getChat = () => {
 			// 400 채팅방 꽉 참
 		}
 	);
+};
+
+const msg = ref({
+	type: "chat.message",
+	message: "",
+	userNickname: userInfo.nickname,
+	userId: userInfo.id,
+});
+
+const writeChat = () => {
+	handlers.send(msg);
 };
 
 onMounted(() => {
@@ -109,23 +127,25 @@ onMounted(() => {
 		</div>
 		<div class="attendance" @click="isShow">
 			<div class="attendance-title">접속한 분들 ▼</div>
-			<div v-if="show" class="attendance-item" v-for="user in users">
-				{{ user }}
+			<div v-if="show" class="attendance-item" v-for="member in joinedMembers">
+				{{ member }}
 			</div>
 		</div>
 	</div>
 	<div class="border chat">
 		<div class="chats">
 			<div class="chat-wrap">
-				<div class="enter">{{ joinedMembers }} 님이 들어오셨어요.</div>
+				<div class="enter">
+					{{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요.
+				</div>
 			</div>
 			<template v-for="msg in messages">
 				<chat-item :msg="msg" />
 			</template>
 		</div>
 		<div class="send-div">
-			<textarea class="border" type="text"></textarea>
-			<span class="send-but">전송</span>
+			<textarea class="border" type="text" v-model="msg.message"></textarea>
+			<span class="send-but" @click="writeChat">전송</span>
 		</div>
 	</div>
 </template>

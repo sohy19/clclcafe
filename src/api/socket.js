@@ -1,4 +1,8 @@
-export function socket(chatId, messages) {
+function decodeUnicode(str) {
+	return decodeURIComponent(str.split("\\u").join("%u"));
+}
+
+export function socket(chatId, messages, joinedMembers) {
 	const handlers = {
 		ws: null,
 		retry: 0,
@@ -36,20 +40,31 @@ export function socket(chatId, messages) {
 		onerror() {
 			console.error("웹소켓 에러가 발생했습니다.");
 		},
+		send(message) {
+			this.ws.send(JSON.stringify(message));
+		},
 		onmessage(event) {
 			const message_json = event.data;
 			console.log("웹소켓 텍스트 메세지 수신 :", message_json);
 
-			const { type } = JSON.parse(message_json);
+			const { type, userId, message, userNickname, chatTime } =
+				JSON.parse(message_json);
 
 			switch (type) {
 				case "chat.user.join": // 유저가 접속했을 때
 					console.log("메시지타입 :", type);
-					console.log("유저 접속!");
+					console.log("유저 접속!", decodeUnicode(userNickname));
+					joinedMembers.push(decodeUnicode(userNickname));
 					break;
 				case "chat.message": // 유저가 메시지를 보낼 때
 					console.log("메시지타입 :", type);
-					messages.push(message_json);
+					messages.push({
+						userId: userId,
+						userNickname: decodeUnicode(userNickname),
+						message: decodeUnicode(message),
+						chatTime: chatTime,
+					});
+
 					break;
 				case "chat.user.leave": // 유저가 나갔을 때
 					console.log("메시지타입 :", type);
@@ -67,4 +82,6 @@ export function socket(chatId, messages) {
 	)}`;
 
 	ws: handlers.connect(ws_url);
+
+	return handlers;
 }
