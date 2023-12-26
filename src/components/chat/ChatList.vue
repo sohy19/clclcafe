@@ -38,9 +38,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="search-div">
-		<input type="text" placeholder="Search in site" />
-		<search-icon class="search-icon" />
+	<div class="search-section">
+		<div class="search-div">
+			<input type="text" placeholder="Search in site" />
+			<search-icon class="search-icon" />
+		</div>
 	</div>
 	<div class="wrap">
 		<chat-list-item v-for="chat in chats" :key="chat.id" :chat="chat" />
@@ -55,6 +57,10 @@ onMounted(() => {
 <style scoped>
 @import "@/assets/common/global.css";
 
+.search-section {
+	width: 58rem;
+	margin: 0 auto;
+}
 .search-div {
 	width: 15rem;
 	padding: 0.5rem;
@@ -82,11 +88,14 @@ input:focus {
 	outline: none;
 }
 .wrap {
+	/* background-color: red; */
+	width: 58rem;
+	margin: 0 auto;
 	display: flex;
 	flex-wrap: wrap;
 	max-height: 30rem;
 	overflow-y: auto;
-	margin-top: 2rem;
+	padding-top: 2rem;
 }
 
 .regist-but {

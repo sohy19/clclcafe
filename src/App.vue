@@ -22,7 +22,7 @@ import CloudIcon from "./assets/icons/CloudIcon.vue";
 
 <style scoped>
 #wrap {
-	margin: -0.5rem 15rem;
+	margin: -0.5rem 20vw;
 	text-align: center;
 	min-height: 90vh;
 	padding-bottom: 10rem;

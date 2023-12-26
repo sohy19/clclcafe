@@ -2,7 +2,7 @@ function decodeUnicode(str) {
 	return decodeURIComponent(str.split("\\u").join("%u"));
 }
 
-export function socket(chatId, messages, joinedMembers) {
+export function socket(chatId, messages, joinedMembers, scrollToBottom) {
 	const handlers = {
 		ws: null,
 		retry: 0,
@@ -66,7 +66,7 @@ export function socket(chatId, messages, joinedMembers) {
 						message: decodeUnicode(message),
 						chatTime: chatTime,
 					});
-
+					scrollToBottom();
 					break;
 				case "chat.user.leave": // 유저가 나갔을 때
 					console.log("메시지타입 :", type);

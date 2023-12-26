@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { onMounted, ref, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { getDetail, getUser, joinChat, moreChat } from "@/api/chat";
 import ChatItem from "./item/ChatItem.vue";
 import { socket } from "@/api/socket";
@@ -11,6 +11,7 @@ const memberStore = useMemberStore();
 const { userInfo } = storeToRefs(memberStore);
 
 const route = useRoute();
+const router = useRouter();
 const { chatId } = route.params;
 
 // ************ 채팅 정보 ************
@@ -69,7 +70,13 @@ const messages = ref([]);
 const joinMember = ref();
 const handlers = ref(null);
 const timestamp = ref(null);
+const chatContainer = ref(null);
 
+const scrollToBottom = () => {
+	nextTick(() => {
+		chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+	});
+};
 const getChat = () => {
 	joinChat(
 		chatId,
@@ -86,12 +93,21 @@ const getChat = () => {
 				messages.value.push(msg);
 			});
 			// 소켓 연결
-			handlers.value = socket(chatId, messages.value, joinedMembers.value);
+			handlers.value = socket(
+				chatId,
+				messages.value,
+				joinedMembers.value,
+				scrollToBottom
+			);
 			console.log(data);
 		},
 		(error) => {
-			console.log(error);
 			// 400 채팅방 꽉 참
+			alert("이런! 채팅방이 꽉 차버렸어요. 조금만 기다려 주시겠어요?");
+			router.replace({
+				name: "chat",
+			});
+			console.log(error);
 		}
 	);
 };
@@ -106,7 +122,7 @@ const msg = ref({
 const writeChat = () => {
 	// console.log("wirteChat : ", msg.value);
 	handlers.value.onsend(msg.value);
-	// msg.value.message = "";
+	msg.value.message = "";
 };
 
 const getMoreChat = () => {
@@ -159,7 +175,7 @@ onMounted(() => {
 		</div>
 	</div>
 	<div class="border chat">
-		<div class="chats">
+		<div class="chats" ref="chatContainer">
 			<div class="chat-wrap">
 				<div>
 					<div v-if="timestamp" @click="getMoreChat">채팅 더보기</div>
@@ -177,7 +193,7 @@ onMounted(() => {
 				class="border"
 				type="text"
 				v-model="msg.message"
-				@keyup.enter="writeChat"
+				@keydown.enter.prevent="writeChat"
 			></textarea>
 			<span class="send-but" @click="writeChat">전송</span>
 		</div>
@@ -228,8 +244,8 @@ span {
 	position: absolute;
 	z-index: 1;
 	margin-top: 3rem;
-	top: 57vh;
-	right: 34vw;
+	top: 28rem;
+
 	text-align: left;
 }
 
@@ -257,7 +273,7 @@ span {
 .chats {
 	background-color: white;
 	height: 37rem;
-	overflow: scroll;
+	overflow: auto;
 	padding: 1rem;
 	border-radius: 1rem 1rem 0 0;
 }
