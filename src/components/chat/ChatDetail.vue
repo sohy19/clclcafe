@@ -87,8 +87,7 @@ const getChat = () => {
 			} else {
 				timestamp.value = null;
 			}
-			// joinMember.value = data.joinedMembers[0];
-			joinedMembers.value = data.joinedMembers;
+			// joinedMembers.value = data.joinedMembers;
 			data.oldMessages.reverse().forEach((msg) => {
 				messages.value.push(msg);
 			});
@@ -236,10 +235,10 @@ span {
 	display: inline-block;
 	font-size: 0.9rem;
 	position: absolute;
-	z-index: 1;
+	z-index: 10;
 	margin-top: 3rem;
 	top: 28rem;
-
+	right: 30rem;
 	text-align: left;
 }
 
