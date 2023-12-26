@@ -10,6 +10,7 @@ export const useMemberStore = defineStore(
 		const router = useRouter();
 		const isLogin = ref(false);
 		const userInfo = ref({
+			id: 0,
 			email: "",
 			nickname: "",
 		});
@@ -25,8 +26,9 @@ export const useMemberStore = defineStore(
 						// console.log(data.member.nickname);
 						sessionStorage.setItem("accessToken", data.accessToken);
 						sessionStorage.setItem("refreshToken", data.refreshToken);
-						userInfo.value.nickname = data.member.nickname;
+						userInfo.value.id = data.member.id;
 						userInfo.value.email = data.member.email;
+						userInfo.value.nickname = data.member.nickname;
 						isLogin.value = true;
 						isValidToken.value = true;
 						// console.log(userInfo.value.nickname);
@@ -118,7 +120,7 @@ export const useMemberStore = defineStore(
 			sessionStorage.clear();
 			alert("로그아웃 되었습니다.");
 			router.replace({
-				name: "main",
+				name: "chat",
 			});
 		};
 

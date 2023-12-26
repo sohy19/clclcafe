@@ -2,8 +2,8 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { getDetail, getUser, joinChat } from "@/api/chat";
-import MyChatItem from "./item/MyChatItem.vue";
-import YourChatItem from "./item/YourChatItem.vue";
+import ChatItem from "./item/ChatItem.vue";
+import { socket } from "@/api/socket";
 
 const route = useRoute();
 const { chatId } = route.params;
@@ -62,6 +62,7 @@ const getUsers = () => {
 // ************ 채팅 ************
 const timestamp = ref(null);
 const messages = ref([]);
+const joinedMembers = ref("");
 
 const getChat = () => {
 	joinChat(
@@ -73,12 +74,17 @@ const getChat = () => {
 			} else {
 				timestamp.value = null;
 			}
-			data.oldmessages.forEach((msg) => {
+			joinedMembers.value = data.joinedMembers[0];
+			data.oldmessages.reverse().forEach((msg) => {
 				messages.value.push(msg);
 			});
+			// 소켓 연결
+			socket(chatId, messages.value);
+			console.log(data);
 		},
 		(error) => {
 			console.log(error);
+			// 400 채팅방 꽉 참
 		}
 	);
 };
@@ -110,8 +116,12 @@ onMounted(() => {
 	</div>
 	<div class="border chat">
 		<div class="chats">
-			<your-chat-item />
-			<my-chat-item />
+			<div class="chat-wrap">
+				<div class="enter">{{ joinedMembers }} 님이 들어오셨어요.</div>
+			</div>
+			<template v-for="msg in messages">
+				<chat-item :msg="msg" />
+			</template>
 		</div>
 		<div class="send-div">
 			<textarea class="border" type="text"></textarea>
@@ -231,7 +241,7 @@ span {
 }
 
 .enter {
-	/* background-color: #afbdca; */
+	background-color: white;
 	padding: 0.5rem;
 	/* width: 15rem; */
 	margin: 0 auto;
