@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { getDetail, getUser, joinChat } from "@/api/chat";
+import { getDetail, getUser, joinChat, moreChat } from "@/api/chat";
 import ChatItem from "./item/ChatItem.vue";
 import { socket } from "@/api/socket";
 import { useMemberStore } from "@/stores/member";
@@ -65,10 +65,10 @@ const getUsers = () => {
 };
 
 // ************ 채팅 ************
-const timestamp = ref(null);
 const messages = ref([]);
 const joinMember = ref();
 const handlers = ref(null);
+const timestamp = ref(null);
 
 const getChat = () => {
 	joinChat(
@@ -82,7 +82,7 @@ const getChat = () => {
 			}
 			// joinMember.value = data.joinedMembers[0];
 			joinedMembers.value = data.joinedMembers;
-			data.oldmessages.reverse().forEach((msg) => {
+			data.oldMessages.reverse().forEach((msg) => {
 				messages.value.push(msg);
 			});
 			// 소켓 연결
@@ -98,14 +98,39 @@ const getChat = () => {
 
 const msg = ref({
 	type: "chat.message",
-	message: "test",
+	message: "",
 	userNickname: userInfo.value.nickname,
 	userId: userInfo.value.id,
 });
 
 const writeChat = () => {
-	console.log("wirteChat : ", msg.value);
+	// console.log("wirteChat : ", msg.value);
 	handlers.value.onsend(msg.value);
+	// msg.value.message = "";
+};
+
+const getMoreChat = () => {
+	console.log("get chat!");
+	moreChat(
+		chatId,
+		timestamp.value,
+		(response) => {
+			let { data } = response;
+			if (data.lastEvaluatedKey) {
+				timestamp.value = data.lastEvaluatedKey.timestamp;
+			} else {
+				timestamp.value = null;
+			}
+
+			data.oldMessages.forEach((msg) => {
+				messages.value.unshift(msg);
+			});
+			console.log("moremchat", data);
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
 };
 
 onMounted(() => {
@@ -136,6 +161,9 @@ onMounted(() => {
 	<div class="border chat">
 		<div class="chats">
 			<div class="chat-wrap">
+				<div>
+					<div v-if="timestamp" @click="getMoreChat">채팅 더보기</div>
+				</div>
 				<div class="enter">
 					{{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요.
 				</div>
@@ -145,7 +173,12 @@ onMounted(() => {
 			</template>
 		</div>
 		<div class="send-div">
-			<textarea class="border" type="text" v-model="msg.message"></textarea>
+			<textarea
+				class="border"
+				type="text"
+				v-model="msg.message"
+				@keyup.enter="writeChat"
+			></textarea>
 			<span class="send-but" @click="writeChat">전송</span>
 		</div>
 	</div>
