@@ -178,7 +178,9 @@ onMounted(() => {
 		<div class="chats" ref="chatContainer">
 			<div class="chat-wrap">
 				<div>
-					<div v-if="timestamp" @click="getMoreChat">채팅 더보기</div>
+					<div v-if="timestamp" @click="getMoreChat" class="more-btn">
+						채팅 더보기
+					</div>
 				</div>
 				<div class="enter">
 					{{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요.
@@ -317,5 +319,16 @@ span {
 	margin: 0 auto;
 	font-size: 0.85rem;
 	color: gray;
+}
+
+.more-btn {
+	background-color: whitesmoke;
+	font-size: 0.8rem;
+	padding: 0.2rem 0;
+	color: gray;
+}
+
+.more-btn:hover {
+	cursor: pointer;
 }
 </style>
