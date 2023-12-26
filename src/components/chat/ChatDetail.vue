@@ -68,7 +68,7 @@ const getUsers = () => {
 const timestamp = ref(null);
 const messages = ref([]);
 const joinMember = ref();
-const handlers = null;
+const handlers = ref(null);
 
 const getChat = () => {
 	joinChat(
@@ -86,7 +86,7 @@ const getChat = () => {
 				messages.value.push(msg);
 			});
 			// 소켓 연결
-			handlers = socket(chatId, messages.value, joinedMembers.value);
+			handlers.value = socket(chatId, messages.value, joinedMembers.value);
 			console.log(data);
 		},
 		(error) => {
@@ -98,13 +98,14 @@ const getChat = () => {
 
 const msg = ref({
 	type: "chat.message",
-	message: "",
-	userNickname: userInfo.nickname,
-	userId: userInfo.id,
+	message: "test",
+	userNickname: userInfo.value.nickname,
+	userId: userInfo.value.id,
 });
 
 const writeChat = () => {
-	handlers.send(msg);
+	console.log("wirteChat : ", msg.value);
+	handlers.value.onsend(msg.value);
 };
 
 onMounted(() => {

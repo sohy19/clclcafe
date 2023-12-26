@@ -12,6 +12,7 @@ export function socket(chatId, messages, joinedMembers) {
 			this.ws.onopen = this.onopen.bind(this);
 			this.ws.onclose = this.onclose.bind(this);
 			this.ws.onerror = this.onerror.bind(this);
+			// this.ws.send = this.onsend.bind(this);
 			this.ws.onmessage = this.onmessage.bind(this);
 		},
 		reconnect() {
@@ -40,7 +41,8 @@ export function socket(chatId, messages, joinedMembers) {
 		onerror() {
 			console.error("웹소켓 에러가 발생했습니다.");
 		},
-		send(message) {
+		onsend(message) {
+			console.log("send : ", message);
 			this.ws.send(JSON.stringify(message));
 		},
 		onmessage(event) {
