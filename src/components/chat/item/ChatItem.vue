@@ -8,7 +8,10 @@ defineProps({ msg: Object });
 </script>
 
 <template>
-	<div v-if="msg.userId == userInfo.id" class="chat-item">
+	<div v-if="msg.message == 'memberEnter'">
+		<div class="enter">{{ msg.userNickname }} 님이 들어오셨어요.</div>
+	</div>
+	<div v-else-if="msg.userId == userInfo.id" class="chat-item">
 		<div class="chat-inner right">
 			<div class="time">{{ msg.chatTime }}</div>
 			<div class="message send">{{ msg.message }}</div>
@@ -75,5 +78,14 @@ defineProps({ msg: Object });
 	background-color: #e9deca;
 	margin-right: 0.3rem;
 	text-align: left;
+}
+
+.enter {
+	background-color: white;
+	padding: 0.5rem;
+	/* width: 15rem; */
+	margin: 0 auto;
+	font-size: 0.85rem;
+	color: gray;
 }
 </style>

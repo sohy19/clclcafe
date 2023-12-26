@@ -93,12 +93,7 @@ const getChat = () => {
 				messages.value.push(msg);
 			});
 			// 소켓 연결
-			handlers.value = socket(
-				chatId,
-				messages.value,
-				joinedMembers.value,
-				scrollToBottom
-			);
+			handlers.value = socket(chatId, messages.value, scrollToBottom);
 			console.log(data);
 		},
 		(error) => {
@@ -181,9 +176,6 @@ onMounted(() => {
 					<div v-if="timestamp" @click="getMoreChat" class="more-btn">
 						채팅 더보기
 					</div>
-				</div>
-				<div class="enter">
-					<!-- {{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요. -->
 				</div>
 			</div>
 			<template v-for="msg in messages">
@@ -310,15 +302,6 @@ span {
 
 .send-but:hover {
 	cursor: pointer;
-}
-
-.enter {
-	background-color: white;
-	padding: 0.5rem;
-	/* width: 15rem; */
-	margin: 0 auto;
-	font-size: 0.85rem;
-	color: gray;
 }
 
 .more-btn {

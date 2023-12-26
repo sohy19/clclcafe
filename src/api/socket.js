@@ -2,7 +2,7 @@ function decodeUnicode(str) {
 	return decodeURIComponent(str.split("\\u").join("%u"));
 }
 
-export function socket(chatId, messages, joinedMembers, scrollToBottom) {
+export function socket(chatId, messages, scrollToBottom) {
 	const handlers = {
 		ws: null,
 		retry: 0,
@@ -56,7 +56,10 @@ export function socket(chatId, messages, joinedMembers, scrollToBottom) {
 				case "chat.user.join": // 유저가 접속했을 때
 					console.log("메시지타입 :", type);
 					console.log("유저 접속!", decodeUnicode(userNickname));
-					joinedMembers.push(decodeUnicode(userNickname));
+					messages.push({
+						message: "memberEnter",
+						userNickname: decodeUnicode(userNickname),
+					});
 					break;
 				case "chat.message": // 유저가 메시지를 보낼 때
 					console.log("메시지타입 :", type);
