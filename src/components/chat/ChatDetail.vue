@@ -193,7 +193,7 @@ onMounted(() => {
 				class="border"
 				type="text"
 				v-model="msg.message"
-				@keydown.enter.prevent="writeChat"
+				@keypress.enter.prevent="writeChat"
 			></textarea>
 			<span class="send-but" @click="writeChat">전송</span>
 		</div>
