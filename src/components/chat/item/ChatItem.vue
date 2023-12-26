@@ -68,10 +68,12 @@ defineProps({ msg: Object });
 .send {
 	background-color: #7996b4;
 	margin-left: 0.3rem;
+	text-align: right;
 }
 
 .get {
 	background-color: #e9deca;
 	margin-right: 0.3rem;
+	text-align: left;
 }
 </style>

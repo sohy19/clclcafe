@@ -183,7 +183,7 @@ onMounted(() => {
 					</div>
 				</div>
 				<div class="enter">
-					{{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요.
+					<!-- {{ joinedMembers[joinedMembers.length - 1] }} 님이 들어오셨어요. -->
 				</div>
 			</div>
 			<template v-for="msg in messages">
@@ -195,7 +195,7 @@ onMounted(() => {
 				class="border"
 				type="text"
 				v-model="msg.message"
-				@keypress.enter.prevent="writeChat"
+				@keypress.enter="writeChat"
 			></textarea>
 			<span class="send-but" @click="writeChat">전송</span>
 		</div>
