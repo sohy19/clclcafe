@@ -2,7 +2,7 @@ function decodeUnicode(str) {
 	return decodeURIComponent(str.split("\\u").join("%u"));
 }
 
-export function socket(chatId, messages, scrollToBottom) {
+export function socket(chatId, messages, scrollToBottom, getUsers) {
 	const handlers = {
 		ws: null,
 		retry: 0,
@@ -42,27 +42,23 @@ export function socket(chatId, messages, scrollToBottom) {
 			console.error("웹소켓 에러가 발생했습니다.");
 		},
 		onsend(message) {
-			console.log("send : ", message);
+			// console.log("send : ", message);
 			this.ws.send(JSON.stringify(message));
 		},
 		onmessage(event) {
 			const message_json = event.data;
-			console.log("웹소켓 텍스트 메세지 수신 :", message_json);
-
 			const { type, userId, message, userNickname, chatTime } =
 				JSON.parse(message_json);
 
 			switch (type) {
 				case "chat.user.join": // 유저가 접속했을 때
-					console.log("메시지타입 :", type);
-					console.log("유저 접속!", decodeUnicode(userNickname));
 					messages.push({
 						message: "memberEnter",
 						userNickname: decodeUnicode(userNickname),
 					});
+					getUsers();
 					break;
 				case "chat.message": // 유저가 메시지를 보낼 때
-					console.log("메시지타입 :", type);
 					messages.push({
 						userId: userId,
 						userNickname: decodeUnicode(userNickname),
@@ -72,11 +68,11 @@ export function socket(chatId, messages, scrollToBottom) {
 					scrollToBottom();
 					break;
 				case "chat.user.leave": // 유저가 나갔을 때
-					console.log("메시지타입 :", type);
 					messages.push({
 						message: "memberLeave",
 						userNickname: decodeUnicode(userNickname),
 					});
+					getUsers();
 					break;
 				default:
 					console.error(`Invalid message type : ${type}`);

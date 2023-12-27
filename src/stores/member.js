@@ -68,7 +68,7 @@ export const useMemberStore = defineStore(
 								userInfo.value.nickname = "";
 								isValidToken.value = false;
 								sessionStorage.clear();
-								alert("로그아웃 되었습니다.");
+								alert("세션이 만료되었어요. 다시 로그아웃 해주세요!");
 								router.replace({
 									name: "chat",
 								});
@@ -105,7 +105,7 @@ export const useMemberStore = defineStore(
 			userInfo.value.nickname = "";
 			isValidToken.value = false;
 			sessionStorage.clear();
-			alert("로그아웃 되었습니다.");
+			alert("로그아웃 되었어요.");
 			router.replace({
 				name: "chat",
 			});

@@ -23,7 +23,7 @@ const login = async () => {
 
 const callbackFunc = async () => {
 	if (isLogin.value) {
-		alert("로그인되었습니다.");
+		alert("로그인 되었어요.");
 		router.replace("/");
 	} else {
 		isError.value = true;

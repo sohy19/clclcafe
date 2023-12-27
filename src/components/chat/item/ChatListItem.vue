@@ -3,10 +3,11 @@ import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { deleteChat } from "@/api/chat";
 
 const props = defineProps({ chat: Object });
 const memberStore = useMemberStore();
-const { isLogin } = storeToRefs(memberStore);
+const { isLogin, userInfo } = storeToRefs(memberStore);
 const router = useRouter();
 const isMax = ref(false);
 
@@ -34,6 +35,23 @@ const joinChat = () => {
 	}
 };
 
+// ************ 채팅 삭제 ************
+const deleteChatItem = () => {
+	let bool = confirm("삭제하시겠어요?");
+	if (bool) {
+		deleteChat(
+			props.chat.id,
+			() => {
+				alert("삭제되었어요.");
+				window.location.href = "/";
+			},
+			(error) => {
+				console.log(error);
+			}
+		);
+	}
+};
+
 onMounted(() => {
 	isMaxFunc();
 });
@@ -41,8 +59,17 @@ onMounted(() => {
 
 <template>
 	<div id="wrap">
-		<div id="title">
-			{{ truncateText(chat.name, 15) }}
+		<div class="top-content">
+			<div id="title">
+				{{ truncateText(chat.name, 15) }}
+			</div>
+			<div
+				v-if="userInfo.id == chat.userId"
+				class="delete-btn"
+				@click="deleteChatItem"
+			>
+				✘
+			</div>
 		</div>
 		<div id="description">
 			{{ truncateText(chat.description, 46) }}
@@ -73,6 +100,20 @@ div {
 	display: flex;
 	flex-direction: column;
 	text-align: left;
+}
+
+.top-content {
+	display: flex;
+	justify-content: space-between;
+}
+
+.delete-btn {
+	color: red;
+}
+
+.delete-btn:hover {
+	opacity: 80%;
+	cursor: pointer;
 }
 
 #title {

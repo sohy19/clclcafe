@@ -94,7 +94,7 @@ const getChat = () => {
 			});
 			scrollToBottom();
 			// 소켓 연결
-			handlers.value = socket(chatId, messages.value, scrollToBottom);
+			handlers.value = socket(chatId, messages.value, scrollToBottom, getUsers);
 			console.log(data);
 		},
 		(error) => {
@@ -254,13 +254,11 @@ span {
 	background-color: #afbdca;
 	padding: 0.7rem 1rem;
 	border-radius: 2rem;
-	display: inline-block;
 	font-size: 0.9rem;
 	position: absolute;
-	z-index: 10;
-	margin-top: 3rem;
-	top: 25rem;
-	right: 31rem;
+	z-index: 1;
+	margin-top: -2.5rem;
+	margin-left: 21rem;
 	text-align: left;
 }
 
@@ -334,5 +332,9 @@ span {
 
 .more-btn:hover {
 	cursor: pointer;
+}
+
+.members {
+	background-color: red;
 }
 </style>
