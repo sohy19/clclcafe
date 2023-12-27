@@ -21,6 +21,7 @@ export const useMemberStore = defineStore(
 				user,
 				(response) => {
 					if (response.status === httpStatusCode.OK) {
+						console.log("이전 : ", isLogin.value);
 						let { data } = response;
 						console.log(data);
 						// console.log(data.member.nickname);
@@ -34,6 +35,7 @@ export const useMemberStore = defineStore(
 						// console.log(userInfo.value.nickname);
 						// alert("로그인되었습니다.");
 						// router.replace("/");
+						console.log("이후 : ", isLogin.value);
 					} else {
 						isLogin.value = false;
 						isValidToken.value = false;
@@ -51,7 +53,7 @@ export const useMemberStore = defineStore(
 			// callbackFunc();
 		};
 
-		// const tokenRegenerate = async (callbackFunc) => {
+		// const tokenRegenerate = async () => {
 		// 	await tokenRegeneration(
 		// 		{
 		// 			accessToken: sessionStorage.getItem("accessToken"),
@@ -95,7 +97,6 @@ export const useMemberStore = defineStore(
 		// 			}
 		// 		}
 		// 	);
-		// 	callbackFunc();
 		// };
 
 		const userLogout = async () => {

@@ -18,7 +18,7 @@ defineProps({ msg: Object });
 		</div>
 	</div>
 
-	<div v-else class="chat-item get">
+	<div v-else class="chat-item">
 		<div class="name">{{ msg.userNickname }}</div>
 		<div class="chat-inner">
 			<div class="message get">
@@ -51,6 +51,7 @@ defineProps({ msg: Object });
 	text-align: left;
 	font-family: "SOYOMapleBoldTTF";
 	background-color: white;
+	margin-bottom: 0.3rem;
 }
 
 .time {
@@ -64,6 +65,7 @@ defineProps({ msg: Object });
 	max-width: 18rem;
 	padding: 0.5rem;
 	border-radius: 1rem;
+	text-align: left;
 
 	/* border: 1px solid blue; */
 }
@@ -71,13 +73,11 @@ defineProps({ msg: Object });
 .send {
 	background-color: #7996b4;
 	margin-left: 0.3rem;
-	text-align: right;
 }
 
 .get {
 	background-color: #e9deca;
 	margin-right: 0.3rem;
-	text-align: left;
 }
 
 .enter {

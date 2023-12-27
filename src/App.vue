@@ -1,14 +1,20 @@
 <script setup>
 import VNavbar from "@/components/layout/VNavbar.vue";
+import { useRouter } from "vue-router";
 import CloudIcon from "./assets/icons/CloudIcon.vue";
+
+const router = useRouter();
+
+const goMain = () => {
+	router.push({ name: "chat" });
+	// 새로고침
+};
 </script>
 
 <template>
 	<div id="wrap">
 		<v-navbar />
-		<router-link :to="{ name: 'chat' }">
-			<cloud-icon />
-		</router-link>
+		<cloud-icon @click="goMain" />
 		<router-view />
 	</div>
 </template>
