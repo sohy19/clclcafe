@@ -77,6 +77,7 @@ const scrollToBottom = () => {
 		chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
 	});
 };
+
 const getChat = () => {
 	joinChat(
 		chatId,
@@ -91,6 +92,7 @@ const getChat = () => {
 			data.oldMessages.reverse().forEach((msg) => {
 				messages.value.push(msg);
 			});
+			scrollToBottom();
 			// 소켓 연결
 			handlers.value = socket(chatId, messages.value, scrollToBottom);
 			console.log(data);
@@ -121,6 +123,8 @@ const writeChat = () => {
 
 const getMoreChat = () => {
 	console.log("get chat!");
+	const prevScrollHeight =
+		document.getElementById("chatContainer").scrollHeight;
 	moreChat(
 		chatId,
 		timestamp.value,
@@ -130,12 +134,17 @@ const getMoreChat = () => {
 				timestamp.value = data.lastEvaluatedKey.timestamp;
 			} else {
 				timestamp.value = null;
+				chatContainer.value.removeEventListener("scroll", scrollListener);
 			}
 
 			data.oldMessages.forEach((msg) => {
 				messages.value.unshift(msg);
 			});
 			console.log("moremchat", data);
+			nextTick(() => {
+				const chatContainer = document.getElementById("chatContainer");
+				chatContainer.scrollTop = chatContainer.scrollHeight - prevScrollHeight;
+			});
 		},
 		(error) => {
 			console.log(error);
@@ -143,9 +152,16 @@ const getMoreChat = () => {
 	);
 };
 
+const scrollListener = () => {
+	if (chatContainer.value.scrollTop === 0) {
+		getMoreChat();
+	}
+};
+
 onMounted(() => {
 	getChatInfo();
 	getChat();
+	chatContainer.value.addEventListener("scroll", scrollListener);
 });
 </script>
 
@@ -169,7 +185,7 @@ onMounted(() => {
 		</div>
 	</div>
 	<div class="border chat">
-		<div class="chats" ref="chatContainer">
+		<div class="chats" ref="chatContainer" id="chatContainer">
 			<div class="chat-wrap">
 				<div>
 					<div v-if="timestamp" @click="getMoreChat" class="more-btn">
