@@ -28,7 +28,7 @@ const goMain = () => {
 
 <style scoped>
 #wrap {
-	margin: -0.5rem 20vw;
+	margin: -0.5rem 0;
 	text-align: center;
 	min-height: 90vh;
 	padding-bottom: 10rem;

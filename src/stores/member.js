@@ -116,7 +116,9 @@ export const useMemberStore = defineStore(
 				}
 			);
 			isLogin.value = false;
-			userInfo.value = null;
+			userInfo.value.email = "";
+			userInfo.value.id = 0;
+			userInfo.value.nickname = "";
 			isValidToken.value = false;
 			sessionStorage.clear();
 			alert("로그아웃 되었습니다.");

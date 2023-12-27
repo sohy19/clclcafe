@@ -12,27 +12,34 @@ const logout = async () => {
 </script>
 
 <template>
-	<div>
+	<div class="wrap">
 		<!-- <div > -->
-		<div v-if="isLogin">
-			어서와요, {{ userInfo.nickname }}씨 <span @click="logout">로그아웃</span>
-		</div>
+		<span v-if="isLogin">
+			어서와요, {{ userInfo.nickname }}씨
+			<span @click="logout" class="btn">로그아웃</span>
+		</span>
 		<!-- </div> -->
-		<router-link v-else :to="{ name: 'user-login' }">로그인</router-link>
+		<router-link v-else :to="{ name: 'user-login' }" class="btn"
+			>로그인</router-link
+		>
 	</div>
 </template>
 
 <style scoped>
 @import "@/assets/common/global.css";
 
+.wrap {
+	width: 58rem;
+	margin: 0 auto;
+}
+
 div {
 	padding: 1.5rem 0;
 	text-align: right;
-	padding-right: 3rem;
+	padding-right: 2rem;
 }
 
-a,
-span {
+.btn {
 	background-color: #afbdca;
 	padding: 0.3rem 1rem;
 	border-radius: 1rem;

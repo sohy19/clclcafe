@@ -117,6 +117,10 @@ const msg = ref({
 
 const writeChat = () => {
 	// console.log("wirteChat : ", msg.value);
+	if (msg.value.message == "") {
+		alert("내용을 입력해주세요!");
+		return;
+	}
 	handlers.value.onsend(msg.value);
 	msg.value.message = "";
 };
