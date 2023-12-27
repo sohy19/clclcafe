@@ -22,7 +22,7 @@ export function logout(param, success, fail) {
 
 export function tokenRegeneration(param, success, fail) {
 	local
-		.post(`${url}/members/refresh/`, JSON.stringify(param))
+		.post(`${url}/refresh/`, JSON.stringify(param))
 		.then(success)
 		.catch(fail);
 }

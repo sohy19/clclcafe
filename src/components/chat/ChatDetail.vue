@@ -98,11 +98,13 @@ const getChat = () => {
 			console.log(data);
 		},
 		(error) => {
-			// 400 채팅방 꽉 참
-			alert("이런! 채팅방이 꽉 차버렸어요. 조금만 기다려 주시겠어요?");
-			router.replace({
-				name: "chat",
-			});
+			if (error.response.status === 400) {
+				// 400 채팅방 꽉 참
+				alert("이런! 채팅방이 꽉 차버렸어요. 조금만 기다려 주시겠어요?");
+				router.replace({
+					name: "chat",
+				});
+			}
 			console.log(error);
 		}
 	);

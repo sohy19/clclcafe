@@ -19,7 +19,6 @@ const user = ref({
 const login = async () => {
 	isError.value = false;
 	await userLogin(user.value, callbackFunc);
-	console.log(isLogin.value);
 };
 
 const callbackFunc = async () => {

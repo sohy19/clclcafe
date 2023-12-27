@@ -1,4 +1,10 @@
 import { localAxios } from "@/util/http-commons";
+import { useMemberStore } from "@/stores/member";
+import { httpStatusCode } from "@/util/http-status";
+import axios from "axios";
+
+const memberStore = useMemberStore();
+const { tokenRegenerate } = memberStore;
 
 const local = localAxios();
 
@@ -12,6 +18,24 @@ local.interceptors.request.use(
 		return config;
 	},
 	function (error) {
+		return Promise.reject(error);
+	}
+);
+
+local.interceptors.response.use(
+	(response) => {
+		return response;
+	},
+	async (error) => {
+		if (error.response.status === httpStatusCode.UNAUTHORIZED) {
+			tokenRegenerate();
+			error.config.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+			};
+			const response = await axios.request(error.config);
+			return response;
+		}
 		return Promise.reject(error);
 	}
 );
