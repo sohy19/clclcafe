@@ -12,8 +12,8 @@ const { userLogin } = memberStore;
 const isError = ref(false);
 
 const user = ref({
-	email: "sohy19@naver.com",
-	password: "1004a**",
+	email: "",
+	password: "",
 });
 
 const login = async () => {

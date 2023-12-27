@@ -6,15 +6,14 @@ import CloudIcon from "./assets/icons/CloudIcon.vue";
 const router = useRouter();
 
 const goMain = () => {
-	router.push({ name: "chat" });
-	// 새로고침
+	window.location.href = "/";
 };
 </script>
 
 <template>
 	<div id="wrap">
 		<v-navbar />
-		<cloud-icon @click="goMain" />
+		<cloud-icon class="icon" @click="goMain" />
 		<router-view />
 	</div>
 </template>
@@ -32,5 +31,14 @@ const goMain = () => {
 	text-align: center;
 	min-height: 90vh;
 	padding-bottom: 10rem;
+}
+
+.icon {
+	width: 30rem;
+	margin: 0 auto;
+}
+
+.icon:hover {
+	cursor: pointer;
 }
 </style>
