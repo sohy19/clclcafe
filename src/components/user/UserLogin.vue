@@ -47,6 +47,7 @@ const callbackFunc = async () => {
 		v-model="user.password"
 		type="password"
 		placeholder="Password"
+		@keypress.enter.prevent="login"
 	/><br />
 	<div v-show="isError" class="error-text">
 		아이디 혹은 비밀번호를 확인해주세요!

@@ -257,8 +257,8 @@ span {
 	position: absolute;
 	z-index: 10;
 	margin-top: 3rem;
-	top: 28rem;
-	right: 30rem;
+	top: 25rem;
+	right: 31rem;
 	text-align: left;
 }
 

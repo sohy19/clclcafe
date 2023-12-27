@@ -19,3 +19,10 @@ export function login(param, success, fail) {
 export function logout(param, success, fail) {
 	local.post(`${url}/logout/`, JSON.stringify(param)).then(success).catch(fail);
 }
+
+export function tokenRegeneration(param, success, fail) {
+	local
+		.post(`${url}/members/refresh/`, JSON.stringify(param))
+		.then(success)
+		.catch(fail);
+}

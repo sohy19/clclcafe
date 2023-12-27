@@ -11,6 +11,9 @@ defineProps({ msg: Object });
 	<div v-if="msg.message == 'memberEnter'">
 		<div class="enter">{{ msg.userNickname }} 님이 들어오셨어요.</div>
 	</div>
+	<div v-else-if="msg.message == 'memberLeave'">
+		<div class="enter">{{ msg.userNickname }} 님이 나가셨어요.</div>
+	</div>
 	<div v-else-if="msg.userId == userInfo.id" class="chat-item">
 		<div class="chat-inner right">
 			<div class="time">{{ msg.chatTime }}</div>

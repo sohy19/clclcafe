@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from "vue";
 import { createChat } from "@/api/chat";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const newChat = ref({
 	name: "",
@@ -11,9 +14,10 @@ const newChat = ref({
 const createNewChat = () => {
 	createChat(
 		newChat.value,
-		() => {
-			// 채팅방으로
-			console.log("채팅방 생성 성공!");
+		(response) => {
+			let { data } = response;
+			alert("채팅방이 생성됐어요! 채팅방으로 이동할게요.");
+			router.push({ name: "chat-detail", params: { chatId: data.chatId } });
 		},
 		(error) => {
 			console.log(error);

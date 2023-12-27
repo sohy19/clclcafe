@@ -73,6 +73,10 @@ export function socket(chatId, messages, scrollToBottom) {
 					break;
 				case "chat.user.leave": // 유저가 나갔을 때
 					console.log("메시지타입 :", type);
+					messages.push({
+						message: "memberLeave",
+						userNickname: decodeUnicode(userNickname),
+					});
 					break;
 				default:
 					console.error(`Invalid message type : ${type}`);
