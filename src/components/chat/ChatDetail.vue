@@ -57,7 +57,7 @@ const getUsers = () => {
 		(response) => {
 			let { data } = response;
 			joinedMembers.value = data.joinedMembers;
-			console.log(data.joinedMembers);
+			// console.log(data.joinedMembers);
 		},
 		(error) => {
 			console.log(error);

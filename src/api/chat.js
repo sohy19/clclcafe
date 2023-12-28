@@ -77,3 +77,7 @@ export async function getUser(id, success, fail) {
 export async function deleteChat(id, success, fail) {
 	await local.delete(`${url}/${id}/delete/`).then(success).catch(fail);
 }
+
+export async function searchChat(param, success, fail) {
+	await local.get(`${url}/?search=${param}`).then(success).catch(fail);
+}
