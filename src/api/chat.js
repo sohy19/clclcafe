@@ -1,9 +1,11 @@
 import { localAxios } from "@/util/http-commons";
 import { useMemberStore } from "@/stores/member";
 import { httpStatusCode } from "@/util/http-status";
+import { storeToRefs } from "pinia";
 import axios from "axios";
 
 const memberStore = useMemberStore();
+const { isValidToken } = storeToRefs(memberStore);
 const { tokenRegenerate } = memberStore;
 
 const local = localAxios();

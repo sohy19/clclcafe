@@ -95,7 +95,7 @@ const getChat = () => {
 			scrollToBottom();
 			// 소켓 연결
 			handlers.value = socket(chatId, messages.value, scrollToBottom, getUsers);
-			console.log(data);
+			// console.log(data);
 		},
 		(error) => {
 			if (error.response.status === 400) {
@@ -128,7 +128,6 @@ const writeChat = () => {
 };
 
 const getMoreChat = () => {
-	console.log("get chat!");
 	const prevScrollHeight =
 		document.getElementById("chatContainer").scrollHeight;
 	moreChat(
@@ -146,7 +145,6 @@ const getMoreChat = () => {
 			data.oldMessages.forEach((msg) => {
 				messages.value.unshift(msg);
 			});
-			console.log("moremchat", data);
 			nextTick(() => {
 				const chatContainer = document.getElementById("chatContainer");
 				chatContainer.scrollTop = chatContainer.scrollHeight - prevScrollHeight;

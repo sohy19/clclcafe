@@ -9,12 +9,12 @@ export const useMemberStore = defineStore(
 	() => {
 		const router = useRouter();
 		const isLogin = ref(false);
+		const isValidToken = ref(false);
 		const userInfo = ref({
 			id: 0,
 			email: "",
 			nickname: "",
 		});
-		const isValidToken = ref(false);
 
 		const userLogin = async (user, callbackFunc) => {
 			await login(
@@ -58,36 +58,28 @@ export const useMemberStore = defineStore(
 				},
 				async (error) => {
 					// HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
-					if (error.response.status === httpStatusCode.UNAUTHORIZED) {
-						// 다시 로그인 전 DB에 저장된 RefreshToken 제거.
-						await logout(
-							() => {
-								isLogin.value = false;
-								userInfo.value.email = "";
-								userInfo.value.id = 0;
-								userInfo.value.nickname = "";
-								isValidToken.value = false;
-								sessionStorage.clear();
-								alert("세션이 만료되었어요. 다시 로그아웃 해주세요!");
-								router.replace({
-									name: "chat",
-								});
-							},
-							(error) => {
-								console.error(error);
-								isLogin.value = false;
-							}
-						);
-					}
+					await logout(
+						() => {},
+						(error) => {
+							console.error(error);
+						}
+					);
+					isLogin.value = false;
+					userInfo.value.email = "";
+					userInfo.value.id = 0;
+					userInfo.value.nickname = "";
+					isValidToken.value = false;
+					sessionStorage.clear();
+					alert("세션이 만료되었어요. 다시 로그아웃 해주세요!");
+					window.location.href = "/";
 				}
 			);
 		};
 
 		const userLogout = async () => {
-			console.log("userlogout");
 			await logout(
 				{
-					refreshToken: sessionStorage.getItem("refreshToken"),
+					userId: userInfo.value.id,
 				},
 				() => {
 					// if (response.status === httpStatusCode.OK) {
