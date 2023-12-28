@@ -26,8 +26,7 @@ const chatInfo = ref({
 const getChatInfo = () => {
 	getDetail(
 		chatId,
-		(response) => {
-			let { data } = response;
+		({ data }) => {
 			chatInfo.value.id = data.id;
 			chatInfo.value.name = data.name;
 			chatInfo.value.description = data.description;
@@ -54,8 +53,7 @@ const isShow = () => {
 const getUsers = () => {
 	getUser(
 		chatId,
-		(response) => {
-			let { data } = response;
+		({ data }) => {
 			joinedMembers.value = data.joinedMembers;
 			// console.log(data.joinedMembers);
 		},
@@ -81,8 +79,7 @@ const scrollToBottom = () => {
 const getChat = () => {
 	joinChat(
 		chatId,
-		(response) => {
-			let { data } = response;
+		({ data }) => {
 			if (data.lastEvaluatedKey) {
 				timestamp.value = data.lastEvaluatedKey.timestamp;
 			} else {
@@ -133,8 +130,7 @@ const getMoreChat = () => {
 	moreChat(
 		chatId,
 		timestamp.value,
-		(response) => {
-			let { data } = response;
+		({ data }) => {
 			if (data.lastEvaluatedKey) {
 				timestamp.value = data.lastEvaluatedKey.timestamp;
 			} else {

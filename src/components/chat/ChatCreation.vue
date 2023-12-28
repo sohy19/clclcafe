@@ -14,8 +14,7 @@ const newChat = ref({
 const createNewChat = () => {
 	createChat(
 		newChat.value,
-		(response) => {
-			let { data } = response;
+		({ data }) => {
 			alert("채팅방이 생성됐어요! 채팅방으로 이동할게요.");
 			router.push({ name: "chat-detail", params: { chatId: data.chatId } });
 		},

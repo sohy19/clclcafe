@@ -1,7 +1,7 @@
 <script setup>
 import ChatListItem from "./item/ChatListItem.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
-import { getList } from "@/api/chat";
+import { getList, searchChat } from "@/api/chat";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
@@ -32,6 +32,20 @@ function list() {
 	);
 }
 
+const searchInput = ref("");
+
+function getSearchChat() {
+	searchChat(
+		searchInput.value,
+		({ data }) => {
+			chats.value = data;
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
+}
+
 onMounted(() => {
 	list();
 });
@@ -40,8 +54,13 @@ onMounted(() => {
 <template>
 	<div class="search-section">
 		<div class="search-div">
-			<input type="text" placeholder="Search in site" />
-			<search-icon class="search-icon" />
+			<input
+				type="text"
+				placeholder="Search in site"
+				v-model="searchInput"
+				@keypress.enter.prevent="getSearchChat"
+			/>
+			<search-icon class="search-icon" @click="getSearchChat" />
 		</div>
 	</div>
 	<div class="wrap">
